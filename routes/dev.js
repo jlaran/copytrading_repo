@@ -82,6 +82,16 @@ router.get("/debug/reset-db", async (req, res) => {
             notes TEXT,
             execution_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS daily_reports (
+            id SERIAL PRIMARY KEY,
+            account_number TEXT NOT NULL,
+            date DATE NOT NULL,
+            trades_count INT NOT NULL,
+            total_profit REAL NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
       `);
       res.send("✅ Base de datos reiniciada exitosamente.");
     } catch (err) {

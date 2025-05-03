@@ -14,6 +14,7 @@ app.use(require("./routes/signals"));
 app.use(require("./routes/executions"));
 app.use(require("./routes/access"));
 app.use(require("./routes/dev"));
+app.use(require("./routes/dailyReport"));
 
 const port = process.env.PORT || 3000;
 app.listen(port, async () => {
