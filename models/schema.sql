@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS ea_clients (
 CREATE TABLE IF NOT EXISTS signals (
   id SERIAL PRIMARY KEY,
   symbol TEXT NOT NULL,
+  order_type TEXT NOT NULL,
   lot REAL NOT NULL,
   entry_price REAL NOT NULL,
   tp1 REAL,
