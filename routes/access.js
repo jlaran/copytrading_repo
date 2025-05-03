@@ -4,15 +4,15 @@ const router = express.Router();
 const db = require("../db");
 
 router.get("/check_access", async (req, res) => {
-  const { account_number, api_key } = req.query;
+  const { account_number, license_key } = req.query;
 
-  if (!account_number || !api_key)
-    return res.status(400).json({ error: "account_number y api_key requeridos" });
+  if (!account_number || !license_key)
+    return res.status(400).json({ error: "account_number y license_key requeridos" });
 
   try {
     const result = await db.query(
-      `SELECT enabled FROM ea_clients WHERE account_number = $1 AND api_key = $2`,
-      [account_number, api_key]
+      `SELECT enabled FROM ea_clients WHERE account_number = $1 AND license_key = $2`,
+      [account_number, license_key]
     );
 
     if (result.rows.length === 0)
