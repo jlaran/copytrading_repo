@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+.DS_Store
+npm-debug.log
+
+# Optional cache and logs
+logs
+*.log
+debug.log
+yarn-error.log
+
+# OS-specific files
+Thumbs.db
+*.swp
