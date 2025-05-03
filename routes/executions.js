@@ -4,12 +4,12 @@ const router = express.Router();
 const db = require("../db");
 
 router.post("/executions", async (req, res) => {
-  const { signal_id, result, notes, account_number, api_key } = req.body;
+  const { signal_id, result, notes, account_number, license_key } = req.body;
   try {
     await db.query(
-      `INSERT INTO executions (signal_id, result, notes, account_number, api_key)
+      `INSERT INTO executions (signal_id, result, notes, account_number, license_key)
        VALUES ($1, $2, $3, $4, $5)`,
-      [signal_id, result, notes, account_number, api_key]
+      [signal_id, result, notes, account_number, license_key]
     );
 
     await db.query("UPDATE signals SET status = 'executed' WHERE id = $1", [signal_id]);

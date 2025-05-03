@@ -53,7 +53,7 @@ router.get("/debug/reset-db", async (req, res) => {
         CREATE TABLE IF NOT EXISTS ea_clients (
             id SERIAL PRIMARY KEY,
             account_number TEXT UNIQUE NOT NULL,
-            api_key TEXT UNIQUE NOT NULL,
+            license_key TEXT UNIQUE NOT NULL,
             enabled BOOLEAN DEFAULT TRUE,
             name TEXT,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -77,7 +77,7 @@ router.get("/debug/reset-db", async (req, res) => {
             id SERIAL PRIMARY KEY,
             signal_id TEXT REFERENCES signals(signal_id),
             account_number TEXT,
-            api_key TEXT,
+            license_key TEXT,
             result TEXT,
             notes TEXT,
             execution_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
