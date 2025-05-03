@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require("../db");
 
 router.post("/signals", async (req, res) => {
-  const { symbol, lot, entry_price, tp1, tp2, sl } = req.body;
+  const { signal_id_str, symbol, lot, entry_price, tp1, tp2, sl } = req.body;
   try {
     const result = await db.query(
       `INSERT INTO signals (signal_id_str, symbol, lot, entry_price, tp1, tp2, sl)
