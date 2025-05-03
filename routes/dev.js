@@ -33,4 +33,15 @@ router.get("/debug/executions", async (req, res) => {
     }
 });
 
+router.get("/debug/clear-db", async (req, res) => {
+    try {
+      await db.query("TRUNCATE TABLE executions, signals, ea_clients RESTART IDENTITY CASCADE");
+      res.send("✅ Base de datos limpiada exitosamente.");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("❌ Error al limpiar la base de datos.");
+    }
+  });
+  
+
 module.exports = router;
