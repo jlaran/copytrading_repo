@@ -14,17 +14,17 @@ async function syncGoogleSheet() {
     const activeAccounts = [];
 
     for (const row of rows) {
-      const [account_number, api_key, enabledRaw, name] = row;
+      const [account_number, license_key, enabledRaw, name] = row;
       const enabled = enabledRaw.toLowerCase() === "true";
     
       activeAccounts.push(account_number); // 👈 acumulamos cuentas válidas
     
       await db.query(
-        `INSERT INTO ea_clients (account_number, api_key, enabled, name)
+        `INSERT INTO ea_clients (account_number, license_key, enabled, name)
          VALUES ($1, $2, $3, $4)
          ON CONFLICT (account_number)
-         DO UPDATE SET api_key = $2, enabled = $3, name = $4, updated_at = NOW()`,
-        [account_number, api_key, enabled, name]
+         DO UPDATE SET license_key = $2, enabled = $3, name = $4, updated_at = NOW()`,
+        [account_number, license_key, enabled, name]
       );
     }
     
