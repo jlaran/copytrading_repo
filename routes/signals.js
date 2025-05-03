@@ -7,9 +7,9 @@ router.post("/signals", async (req, res) => {
   const { symbol, lot, entry_price, tp1, tp2, sl } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO signals (symbol, lot, entry_price, tp1, tp2, sl)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [symbol, lot, entry_price, tp1, tp2, sl]
+      `INSERT INTO signals (signal_id_str, symbol, lot, entry_price, tp1, tp2, sl)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [signal_id_str, symbol, lot, entry_price, tp1, tp2, sl]
     );
     res.json(result.rows[0]);
   } catch (err) {

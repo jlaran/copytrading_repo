@@ -60,7 +60,8 @@ router.get("/debug/reset-db", async (req, res) => {
         );
         
         CREATE TABLE IF NOT EXISTS signals (
-            id SERIAL PRIMARY KEY,
+            id SERIAL,
+            signal_id_str TEXT NOT NULL PRIMARY KEY,
             symbol TEXT NOT NULL,
             lot REAL NOT NULL,
             entry_price REAL NOT NULL,
@@ -73,7 +74,7 @@ router.get("/debug/reset-db", async (req, res) => {
 
         CREATE TABLE IF NOT EXISTS executions (
             id SERIAL PRIMARY KEY,
-            signal_id INT REFERENCES signals(id),
+            signal_id TEXT REFERENCES signals(signal_id_str),
             account_number TEXT,
             api_key TEXT,
             result TEXT,
