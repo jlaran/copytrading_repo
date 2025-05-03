@@ -63,6 +63,7 @@ router.get("/debug/reset-db", async (req, res) => {
             id SERIAL,
             signal_id TEXT NOT NULL PRIMARY KEY,
             symbol TEXT NOT NULL,
+            order_type TEXT NOT NULL,
             lot REAL NOT NULL,
             entry_price REAL NOT NULL,
             tp1 REAL,
