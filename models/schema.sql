@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS ea_clients (
   
 CREATE TABLE IF NOT EXISTS signals (
   id SERIAL PRIMARY KEY,
-  signal_id TEXT NOT NULL,
   symbol TEXT NOT NULL,
   lot REAL NOT NULL,
   entry_price REAL NOT NULL,
@@ -22,7 +21,7 @@ CREATE TABLE IF NOT EXISTS signals (
 
 CREATE TABLE IF NOT EXISTS executions (
   id SERIAL PRIMARY KEY,
-  signal_id INT REFERENCES signals(signal_id),
+  signal_id INT REFERENCES signals(id),
   account_number TEXT,
   api_key TEXT,
   result TEXT,

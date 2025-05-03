@@ -4,13 +4,12 @@ const router = express.Router();
 const db = require("../db");
 
 router.post("/signals", async (req, res) => {
-  const { id, symbol, order_type, lot, entry_price, tp1, tp2, sl } = req.body;
-
+  const { symbol, lot, entry_price, tp1, tp2, sl } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO signals (id, symbol, order_type, lot, entry_price, tp1, tp2, sl)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-      [id, symbol, order_type, lot, entry_price, tp1, tp2, sl]
+      `INSERT INTO signals (symbol, lot, entry_price, tp1, tp2, sl)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [symbol, lot, entry_price, tp1, tp2, sl]
     );
     res.json(result.rows[0]);
   } catch (err) {
