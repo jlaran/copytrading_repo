@@ -92,6 +92,13 @@ router.get("/debug/reset-db", async (req, res) => {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
 
+        CREATE TABLE IF NOT EXISTS signal_acknowledgements (
+            id SERIAL PRIMARY KEY,
+            signal_id TEXT NOT NULL REFERENCES signals(id),
+            account_number TEXT NOT NULL,
+            license_key TEXT NOT NULL,
+            acknowledged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
       `);
       res.send("✅ Base de datos reiniciada exitosamente.");
     } catch (err) {

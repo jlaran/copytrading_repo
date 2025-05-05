@@ -7,6 +7,8 @@ const { syncGoogleSheet } = require("./services/googleSheetSync");
 
 const app = express();
 app.use(cors());
+// const authMiddleware = require("./middleware/auth");
+// app.use(authMiddleware);
 app.use(bodyParser.json());
 
 // Rutas

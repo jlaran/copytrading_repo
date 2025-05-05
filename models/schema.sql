@@ -39,3 +39,11 @@ CREATE TABLE IF NOT EXISTS daily_reports (
   total_profit REAL NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS signal_acknowledgements (
+  id SERIAL PRIMARY KEY,
+  signal_id TEXT NOT NULL REFERENCES signals(id),
+  account_number TEXT NOT NULL,
+  license_key TEXT NOT NULL,
+  acknowledged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
