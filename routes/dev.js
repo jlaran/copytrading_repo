@@ -33,9 +33,20 @@ router.get("/debug/executions", async (req, res) => {
     }
 });
 
+router.get("/debug/ack", async (req, res) => {
+    try {
+        const result = await db.query("SELECT * FROM signal_acknowledgements");
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error al obtener datos de signal_acknowledgements");
+    }
+});
+
+
 router.get("/debug/clear-db", async (req, res) => {
     try {
-      await db.query("TRUNCATE TABLE executions, signals, ea_clients RESTART IDENTITY CASCADE");
+      await db.query("TRUNCATE TABLE executions, signals, ea_clients, signal_acknowledgements RESTART IDENTITY CASCADE");
       res.send("✅ Base de datos limpiada exitosamente.");
     } catch (err) {
       console.error(err);
@@ -49,6 +60,7 @@ router.get("/debug/reset-db", async (req, res) => {
         DROP TABLE IF EXISTS executions;
         DROP TABLE IF EXISTS signals;
         DROP TABLE IF EXISTS ea_clients;
+        DROP TABLE IF EXISTS signal_acknowledgements;
   
         CREATE TABLE IF NOT EXISTS ea_clients (
             id SERIAL PRIMARY KEY,
@@ -94,7 +106,7 @@ router.get("/debug/reset-db", async (req, res) => {
 
         CREATE TABLE IF NOT EXISTS signal_acknowledgements (
             id SERIAL PRIMARY KEY,
-            signal_id TEXT NOT NULL REFERENCES signals(id),
+            signal_id TEXT NOT NULL REFERENCES signals(signal_id),
             account_number TEXT NOT NULL,
             license_key TEXT NOT NULL,
             acknowledged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
