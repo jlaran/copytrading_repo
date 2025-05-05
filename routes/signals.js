@@ -3,13 +3,18 @@ const router = express.Router();
 const db = require("../db");
 
 router.post("/signals", async (req, res) => {
-  const { id, symbol, lot, entry_price, tp1, tp2, sl, order_type } = req.body;
+  const { signal_id, symbol, lot, entry_price, tp1, tp2, sl, order_type } = req.body;
+
+  if (!signal_id || !symbol || !lot || !entry_price || !order_type) {
+    return res.status(400).json({ error: "Campos obligatorios faltantes" });
+  }
+
   try {
     const result = await db.query(
-      `INSERT INTO signals (id, symbol, lot, entry_price, tp1, tp2, sl, order_type)
+      `INSERT INTO signals (signal_id, symbol, lot, entry_price, tp1, tp2, sl, order_type)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [id, symbol, lot, entry_price, tp1, tp2, sl, order_type]
+      [signal_id, symbol, lot, entry_price, tp1, tp2, sl, order_type]
     );
     res.json(result.rows[0]);
   } catch (err) {
