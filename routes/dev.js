@@ -58,9 +58,9 @@ router.get("/debug/reset-db", async (req, res) => {
     try {
       await db.query(`
         DROP TABLE IF EXISTS executions;
+        DROP TABLE IF EXISTS signal_acknowledgements;
         DROP TABLE IF EXISTS signals;
         DROP TABLE IF EXISTS ea_clients;
-        DROP TABLE IF EXISTS signal_acknowledgements;
   
         CREATE TABLE IF NOT EXISTS ea_clients (
             id SERIAL PRIMARY KEY,
