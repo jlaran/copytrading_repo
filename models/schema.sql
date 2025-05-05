@@ -47,3 +47,14 @@ CREATE TABLE IF NOT EXISTS signal_acknowledgements (
   license_key TEXT NOT NULL,
   acknowledged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS execution_reports (
+  id SERIAL PRIMARY KEY,
+  account_number TEXT NOT NULL,
+  symbol TEXT NOT NULL,
+  volume REAL NOT NULL,
+  price REAL NOT NULL,
+  profit REAL,
+  reason INTEGER,
+  closed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -20,4 +20,52 @@ router.post("/executions", async (req, res) => {
   }
 });
 
+router.post("/executions/report", async (req, res) => {
+  const { account_number, symbol, volume, price, profit, reason } = req.body;
+  if (!account_number || !symbol || !volume || !price) {
+    return res.status(400).json({ error: "Campos requeridos faltantes" });
+  }
+
+  try {
+    await db.query(
+      `INSERT INTO execution_reports (account_number, symbol, volume, price, profit, reason, closed_at)
+       VALUES ($1, $2, $3, $4, $5, $6, NOW())`,
+      [account_number, symbol, volume, price, profit, reason]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("❌ Error al guardar el reporte de cierre:", err);
+    res.status(500).json({ error: "Error interno al guardar reporte" });
+  }
+});
+
+router.get("/executions/reports", async (req, res) => {
+  const { account_number, from, to } = req.query;
+
+  let baseQuery = `SELECT * FROM execution_reports WHERE 1=1`;
+  const params = [];
+  let paramIndex = 1;
+
+  if (account_number) {
+    baseQuery += ` AND account_number = $${paramIndex++}`;
+    params.push(account_number);
+  }
+
+  if (from && to) {
+    baseQuery += ` AND closed_at BETWEEN $${paramIndex++} AND $${paramIndex++}`;
+    params.push(from, to);
+  }
+
+  baseQuery += ` ORDER BY closed_at DESC`;
+
+  try {
+    const result = await db.query(baseQuery, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("❌ Error al obtener reportes filtrados:", err);
+    res.status(500).json({ error: "Error al obtener reportes" });
+  }
+});
+
 module.exports = router;

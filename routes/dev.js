@@ -43,7 +43,6 @@ router.get("/debug/ack", async (req, res) => {
     }
 });
 
-
 router.get("/debug/clear-db", async (req, res) => {
     try {
       await db.query("TRUNCATE TABLE executions, signals, ea_clients, signal_acknowledgements RESTART IDENTITY CASCADE");
@@ -61,6 +60,7 @@ router.get("/debug/reset-db", async (req, res) => {
         DROP TABLE IF EXISTS signal_acknowledgements;
         DROP TABLE IF EXISTS signals;
         DROP TABLE IF EXISTS ea_clients;
+        DROP TABLE IF EXISTS execution_reports;
   
         CREATE TABLE IF NOT EXISTS ea_clients (
             id SERIAL PRIMARY KEY,
@@ -110,6 +110,17 @@ router.get("/debug/reset-db", async (req, res) => {
             account_number TEXT NOT NULL,
             license_key TEXT NOT NULL,
             acknowledged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS execution_reports (
+            id SERIAL PRIMARY KEY,
+            account_number TEXT NOT NULL,
+            symbol TEXT NOT NULL,
+            volume REAL NOT NULL,
+            price REAL NOT NULL,
+            profit REAL,
+            reason INTEGER,
+            closed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
       res.send("✅ Base de datos reiniciada exitosamente.");
