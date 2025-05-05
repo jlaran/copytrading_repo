@@ -43,7 +43,7 @@ router.get("/signals", async (req, res) => {
   }
 
   try {
-    const result = await db.query("SELECT * FROM signals WHERE status = $1", ["pending"]);
+    const result = await db.query("SELECT * FROM signals");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
