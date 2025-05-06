@@ -24,4 +24,37 @@ router.post("/daily-report", async (req, res) => {
   }
 });
 
+router.get("/daily-report", async (req, res) => {
+  const { account, from, to } = req.query;
+  let query = `SELECT account_number, date, trades_count, total_profit FROM daily_reports`;
+  const conditions = [];
+  const params = [];
+
+  if (account) {
+    conditions.push(`account_number = $${params.length + 1}`);
+    params.push(account);
+  }
+  if (from) {
+    conditions.push(`date >= $${params.length + 1}`);
+    params.push(from);
+  }
+  if (to) {
+    conditions.push(`date <= $${params.length + 1}`);
+    params.push(to);
+  }
+
+  if (conditions.length > 0) {
+    query += ` WHERE ` + conditions.join(" AND ");
+  }
+  query += ` ORDER BY date DESC`;
+
+  try {
+    const result = await db.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error al obtener el resumen diario");
+  }
+});
+
 module.exports = router;
